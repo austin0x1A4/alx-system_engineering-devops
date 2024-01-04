@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Active Internet connections (only servers)"
+echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
+
+# Display listening ports with PID and program name
+ss -tulnep | awk '/^tcp|^udp/ {
+    split($6, a, ",")
+    split(a[1], b, ":")
+    split($7, c, ",")
+    split(c[1], d, ":")
+    printf "%-4s %-9s %-9s %-22s %-22s %-12s\n", $1, $2, $3, b[1], d[1], $NF
+}'
